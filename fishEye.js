@@ -1,7 +1,7 @@
 // JavaScript Document
 var fishEye={};
 ;(function(){
-	var camera=[], scene=[], renderer=[],pic=[[],[]],containerDom=[];
+	var camera=[], scene=[], renderer=[],pic=[],containerDom=[];
 	
 	var texture_placeholder,
 			isUserInteracting = false,
@@ -25,8 +25,8 @@ var fishEye={};
 					scene[u] = new THREE.Scene();
 					
 					texture_placeholder = document.createElement( 'canvas' );
-				texture_placeholder.width = 128;
-				texture_placeholder.height = 128;
+				texture_placeholder.width = 16;
+				texture_placeholder.height = 16;
 				
 				var context = texture_placeholder.getContext( '2d' );
 				context.fillStyle = 'rgb( 200, 200, 200 )';
@@ -194,7 +194,7 @@ var fishEye={};
 			function update() {
 				if ( isUserInteracting === false ) {
 
-					lon += 0.1;
+					lon += 0.1*window.devicePixelRatio;
 
 				}
 
@@ -217,34 +217,32 @@ var fishEye={};
 					
 			
 	function reload3D(textureArry){
-				pic=[[],[]];
-				$.each(textureArry.texture,function(i,n){
-					pic[0]=loadTexture( n )
-					})
-				$.each(textureArry.idChannel,function(i,n){
-					pic[1]=loadTexture( n )
-					})
+				pic = [];
+				$.each(textureArry.texture,function(u,v){
+					pic[u] = [];
+				$.each(v,function(i,n){
+					pic[u][i] = loadTexture( n );
+					});
+				});
 				init();
 				animate();
-				
-				$("#"+containerDom[1]).unbind("click").bind("click",function (e) {
-				
-					var canvasOffset = $(this).offset();
-					var canvasX = Math.floor(e.pageX - canvasOffset.left);
-					var canvasY = Math.floor(e.pageY - canvasOffset.top);
+				};
+	function setContainer(containerGroup){
+		containerDom = containerGroup;
+		};
+
+	function getColor(touchPoint){
+		var canvasOffset = $("#"+containerDom[1]).offset();
+					var canvasX = Math.floor(touchPoint.pageX - canvasOffset.left) * window.devicePixelRatio;
+					var canvasY = Math.floor(touchPoint.pageY - canvasOffset.top) * window.devicePixelRatio;
 					// 获取该点像素的数据
-					var context=renderer[1].domElement.getContext("2d");
+					var context = renderer[1].domElement.getContext("2d");
 					var imageData = context.getImageData(canvasX, canvasY, 1, 1);
 				   // 获取该点像素数据
 					var pixel = imageData.data;
-					var pixelColor = "rgba(" + pixel[0] + "," + pixel[1] + "," + pixel[2] + ")";
-					$("#info").html(pixelColor)
-            });
-			
-				}
-	function setContainer(containerGroup){
-		containerDom=containerGroup;
-		}						
-	fishEye.reload3D=reload3D;
-	fishEye.setContainer=setContainer;
+					return "#" + pixel[0] + "#" + pixel[1] + "#" + pixel[2]
+	}						
+	fishEye.reload3D = reload3D;
+	fishEye.setContainer = setContainer;
+	fishEye.getColor = getColor;
 	})();

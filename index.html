@@ -19,7 +19,9 @@
 				font-size:13px;
 				font-weight: bold;
 				text-align:center;
+				z-index: 9999
 			}
+			#container{}
 			#containerA{
 				position:absolute;
 				width:100%;
@@ -31,7 +33,17 @@
 				color: #ffffff;
 			}
 		</style>
-        		<script src="jquery-2.1.0.js" type="text/javascript"></script>
+        <script type="text/javascript" src="zepto/zepto.js"></script>
+        <script type="text/javascript" src="zepto/detect.js"></script>
+        <script type="text/javascript" src="zepto/event.js"></script>
+        <script type="text/javascript" src="zepto/ajax.js"></script>
+        <script type="text/javascript" src="zepto/form.js"></script>
+        <script type="text/javascript" src="zepto/fx.js"></script>
+        <script type="text/javascript" src="zepto/fx_methods.js"></script>
+        <script type="text/javascript" src="zepto/data.js"></script>
+        <script type="text/javascript" src="zepto/assets.js"></script>
+        <script type="text/javascript" src="zepto/selector.js"></script>
+        <script type="text/javascript" src="zepto/zTouch.js"></script>		
 		<script src="three.min.js"></script>
 
 		<script src="renderers/Projector.js"></script>
@@ -46,19 +58,49 @@
 
 
 		<script>
-				
-			var textureGroup={
-					"#255#255#255":{
-						texture:["pisa/px.png","pisa/nx.png","pisa/py.png","pisa/ny.png","pisa/pz.png","pisa/nz.png"],/*右，左，上，下，前，后*/
-						idChannel:["pisa/pxa.png","pisa/nxa.png","pisa/pya.png","pisa/nya.png","pisa/pza.png","pisa/nza.png"]/*右，左，上，下，前，后*/
+			/*空间贴图,热区*/	
+			var textureGroup = {
+					"#255#255#255" : {
+						texture : [/*[展示层,id通道层]*/
+							["pisa/px.png","pisa/nx.png","pisa/py.png","pisa/ny.png","pisa/pz.png","pisa/nz.png"],/*右，左，上，下，前，后*/
+							["pisa/pxa.png","pisa/nxa.png","pisa/pya.png","pisa/nya.png","pisa/pza.png","pisa/nza.png"]/*右，左，上，下，前，后*/
+						],
+						data : {}/*返回后台的数据*/
+					},
+                    "#255#0#0" : {
+                        texture : [/*[展示层,id通道层]*/
+                            ["skybox/px.jpg","skybox/nx.jpg","skybox/py.jpg","skybox/ny.jpg","skybox/pz.jpg","skybox/nz.jpg"],/*右，左，上，下，前，后*/
+                            ["skybox/px.jpg","skybox/nx.jpg","skybox/py.jpg","skybox/ny.jpg","skybox/pz.jpg","skybox/nz.jpg"]/*右，左，上，下，前，后*/
+                        ],
+                        data : {}/*返回后台的数据*/
+                    }
+				};
+            /*描述,标签*/
+			var descriptionGroup = {
+					"#255#255#255" : {
+						description : "描述",/*出现的标签*/
+						data : {}/*返回后台的数据*/
 					}
-				}
-			var descriptionGroup={
-					"#255#255#255":"描述"
-				}
-			fishEye.setContainer(["container","containerA"])
-			fishEye.reload3D(textureGroup["#255#255#255"])
-			
+				};
+			fishEye.setContainer(["container","containerA"]);/*[展示层,id通道层]*/
+			fishEye.reload3D(textureGroup["#255#255#255"]);/*默认展示的空间*/
+            /*触摸事件*/
+			$("#containerA").on("touchstart",function(e){
+       			 $(this).data("touchTime",new Date().getTime());
+       			 $(this).data("touchPoint",{"pageX":e.touches[0].pageX,"pageY":e.touches[0].pageY});
+    		});
+			$("#containerA").on("touchend",function(e){
+        		var endTime = new Date().getTime();
+        		if((endTime - $(this).data("touchTime")) < 600){/*点击才触发*/
+                    var selectColor = fishEye.getColor($(this).data("touchPoint"));/*获得色植*/
+        			$("#info").html(selectColor);
+                    if(textureGroup[selectColor]){
+                        fishEye.reload3D(textureGroup[selectColor]);
+                    };
+        		};
+    		});
+
+
 
 			
 
