@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js canvas - panorama fisheye demo</title>
+		<title>全景</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
@@ -33,22 +33,22 @@
 				color: #ffffff;
 			}
 		</style>
-        <script type="text/javascript" src="zepto/zepto.js"></script>
-        <script type="text/javascript" src="zepto/detect.js"></script>
-        <script type="text/javascript" src="zepto/event.js"></script>
-        <script type="text/javascript" src="zepto/ajax.js"></script>
-        <script type="text/javascript" src="zepto/form.js"></script>
-        <script type="text/javascript" src="zepto/fx.js"></script>
-        <script type="text/javascript" src="zepto/fx_methods.js"></script>
-        <script type="text/javascript" src="zepto/data.js"></script>
-        <script type="text/javascript" src="zepto/assets.js"></script>
-        <script type="text/javascript" src="zepto/selector.js"></script>
-        <script type="text/javascript" src="zepto/zTouch.js"></script>		
-		<script src="three.min.js"></script>
+        <script type="text/javascript" src="js/zepto/zepto.js"></script>
+        <script type="text/javascript" src="js/zepto/detect.js"></script>
+        <script type="text/javascript" src="js/zepto/event.js"></script>
+        <script type="text/javascript" src="js/zepto/ajax.js"></script>
+        <script type="text/javascript" src="js/zepto/form.js"></script>
+        <script type="text/javascript" src="js/zepto/fx.js"></script>
+        <script type="text/javascript" src="js/zepto/fx_methods.js"></script>
+        <script type="text/javascript" src="js/zepto/data.js"></script>
+        <script type="text/javascript" src="js/zepto/assets.js"></script>
+        <script type="text/javascript" src="js/zepto/selector.js"></script>
+        <script type="text/javascript" src="js/zepto/zTouch.js"></script>		
+		<script type="text/javascript" src="js/three.min.js"></script>
 
-		<script src="renderers/Projector.js"></script>
-		<script src="renderers/CanvasRenderer.js"></script>
-        <script src="fishEye.js"></script>
+		<script type="text/javascript" src="js/renderers/Projector.js"></script>
+		<script type="text/javascript" src="js/renderers/CanvasRenderer.js"></script>
+        <script type="text/javascript" src="js/fishEye.js"></script>
 	</head>
 	<body>
 
@@ -62,15 +62,15 @@
 			var textureGroup = {
 					"#255#255#255" : {
 						texture : [/*[展示层,id通道层]*/
-							["pisa/px.png","pisa/nx.png","pisa/py.png","pisa/ny.png","pisa/pz.png","pisa/nz.png"],/*右，左，上，下，前，后*/
-							["pisa/pxa.png","pisa/nxa.png","pisa/pya.png","pisa/nya.png","pisa/pza.png","pisa/nza.png"]/*右，左，上，下，前，后*/
+							["texture/pisa/px.png","texture/pisa/nx.png","texture/pisa/py.png","texture/pisa/ny.png","texture/pisa/pz.png","texture/pisa/nz.png"],/*右，左，上，下，前，后*/
+							["texture/pisa/pxa.png","texture/pisa/nxa.png","texture/pisa/pya.png","texture/pisa/nya.png","texture/pisa/pza.png","texture/pisa/nza.png"]/*右，左，上，下，前，后*/
 						],
 						data : {}/*返回后台的数据*/
 					},
                     "#255#0#0" : {
                         texture : [/*[展示层,id通道层]*/
-                            ["skybox/px.jpg","skybox/nx.jpg","skybox/py.jpg","skybox/ny.jpg","skybox/pz.jpg","skybox/nz.jpg"],/*右，左，上，下，前，后*/
-                            ["skybox/px.jpg","skybox/nx.jpg","skybox/py.jpg","skybox/ny.jpg","skybox/pz.jpg","skybox/nz.jpg"]/*右，左，上，下，前，后*/
+                            ["texture/skybox/px.jpg","texture/skybox/nx.jpg","texture/skybox/py.jpg","texture/skybox/ny.jpg","texture/skybox/pz.jpg","texture/skybox/nz.jpg"],/*右，左，上，下，前，后*/
+                            ["texture/skybox/px.jpg","texture/skybox/nx.jpg","texture/skybox/py.jpg","texture/skybox/ny.jpg","texture/skybox/pz.jpg","texture/skybox/nz.jpg"]/*右，左，上，下，前，后*/
                         ],
                         data : {}/*返回后台的数据*/
                     }
@@ -86,16 +86,18 @@
 			fishEye.reload3D(textureGroup["#255#255#255"]);/*默认展示的空间*/
             /*触摸事件*/
 			$("#containerA").on("touchstart",function(e){
+				e.preventDefault();
        			 $(this).data("touchTime",new Date().getTime());
        			 $(this).data("touchPoint",{"pageX":e.touches[0].pageX,"pageY":e.touches[0].pageY});
     		});
 			$("#containerA").on("touchend",function(e){
+				e.preventDefault();
         		var endTime = new Date().getTime();
         		if((endTime - $(this).data("touchTime")) < 600){/*点击才触发*/
-                    var selectColor = fishEye.getColor($(this).data("touchPoint"));/*获得色植*/
+                    var selectColor = fishEye.getColor($(this).data("touchPoint"),1);/*[坐标，层号]获得色植*/
         			$("#info").html(selectColor);
                     if(textureGroup[selectColor]){
-                        fishEye.reload3D(textureGroup[selectColor]);
+                        fishEye.reload3D(textureGroup[selectColor]);/*换场景*/
                     };
         		};
     		});

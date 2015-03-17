@@ -98,7 +98,7 @@ var fishEye={};
 			}
 	
 	function onDocumentMouseDown( event ) {
-
+				
 				event.preventDefault();
 
 				isUserInteracting = true;
@@ -231,12 +231,12 @@ var fishEye={};
 		containerDom = containerGroup;
 		};
 
-	function getColor(touchPoint){
-		var canvasOffset = $("#"+containerDom[1]).offset();
+	function getColor(touchPoint,num){
+		var canvasOffset = $("#"+containerDom[num]).offset();
 					var canvasX = Math.floor(touchPoint.pageX - canvasOffset.left) * window.devicePixelRatio;
 					var canvasY = Math.floor(touchPoint.pageY - canvasOffset.top) * window.devicePixelRatio;
 					// 获取该点像素的数据
-					var context = renderer[1].domElement.getContext("2d");
+					var context = renderer[num].domElement.getContext("2d");
 					var imageData = context.getImageData(canvasX, canvasY, 1, 1);
 				   // 获取该点像素数据
 					var pixel = imageData.data;
