@@ -98,8 +98,9 @@ var fishEye={};
 			}
 	
 	function onDocumentMouseDown( event ) {
-				
-				event.preventDefault();
+
+					event.stopPropagation();
+					event.preventDefault();
 
 				isUserInteracting = true;
 
@@ -113,6 +114,9 @@ var fishEye={};
 
 			function onDocumentMouseMove( event ) {
 
+					event.stopPropagation();
+					event.preventDefault();
+					
 				if ( isUserInteracting === true ) {
 
 					lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
@@ -123,6 +127,8 @@ var fishEye={};
 
 			function onDocumentMouseUp( event ) {
 
+					event.stopPropagation();
+					event.preventDefault();
 				isUserInteracting = false;
 
 			}
@@ -159,6 +165,7 @@ var fishEye={};
 
 				if ( event.touches.length == 1 ) {
 
+					event.stopPropagation();
 					event.preventDefault();
 
 					onPointerDownPointerX = event.touches[ 0 ].pageX;
@@ -175,6 +182,7 @@ var fishEye={};
 
 				if ( event.touches.length == 1 ) {
 
+					event.stopPropagation();
 					event.preventDefault();
 
 					lon = ( onPointerDownPointerX - event.touches[0].pageX ) * 0.1 + onPointerDownLon;
