@@ -1,7 +1,30 @@
 // JavaScript Document
+if(!requestAnimationFrame){
+	window.requestAnimationFrame = (function(){ 
+		return window.requestAnimationFrame || 
+			window.webkitRequestAnimationFrame || 
+			window.mozRequestAnimationFrame || 
+			window.oRequestAnimationFrame || 
+			window.msRequestAnimationFrame || 
+			function(/* function */ callback, /* DOMElement */ element){ 
+				window.setTimeout(callback, 1000 / 60); 
+			}; 
+	})(); 
+}
+				function webglAvailable() {
+		try {
+			var canvas = document.createElement( 'canvas' );
+			return !!( window.WebGLRenderingContext && (
+				canvas.getContext( 'webgl' ) ||
+				canvas.getContext( 'experimental-webgl' ) )
+			);
+		} catch ( e ) {
+			return false;
+		}
+	}
 var fishEye={};
 ;(function(){
-	var camera=[], scene=[], renderer=[],pic=[],containerDom=[];
+	var camera=[], scene=[], renderer=[],pic=[],containerDom=[],webGL=webglAvailable();
 	
 	var texture_placeholder,
 			isUserInteracting = false,
@@ -34,7 +57,7 @@ var fishEye={};
 				
 				var materials = pic[u];
 				
-				mesh = new THREE.Mesh( new THREE.BoxGeometry( 300, 300, 300, 7, 7, 7 ), new THREE.MeshFaceMaterial( materials ) );
+				mesh = new THREE.Mesh( new THREE.BoxGeometry( 600, 600, 600, 3, 3, 3 ), new THREE.MeshFaceMaterial( materials ) );
 				mesh.scale.x = - 1;
 				scene[u].add( mesh );
 				for ( var i = 0, l = mesh.geometry.vertices.length; i < l; i ++ ) {
@@ -45,8 +68,13 @@ var fishEye={};
 					vertex.multiplyScalar( 550 );
 
 				}
+
+	if ( webGL && u == 0) {
+		renderer[u] = new THREE.WebGLRenderer();
+	}else{
+		renderer[u] = new THREE.CanvasRenderer();
+		}
 				
-				renderer[u] = new THREE.CanvasRenderer();
 				renderer[u].setPixelRatio( window.devicePixelRatio );
 				renderer[u].setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer[u].domElement );
@@ -119,8 +147,12 @@ var fishEye={};
 					
 				if ( isUserInteracting === true ) {
 
-					lon = ( onPointerDownPointerX - event.clientX ) * 0.1 + onPointerDownLon;
-					lat = ( event.clientY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+					var move = .1;
+					if(!webGL){
+						move = .5;
+						}
+					lon = ( onPointerDownPointerX - event.touches[0].pageX ) * move + onPointerDownLon;
+					lat = ( event.touches[0].pageY - onPointerDownPointerY ) * move + onPointerDownLat;
 
 				}
 			}
@@ -184,9 +216,12 @@ var fishEye={};
 
 					event.stopPropagation();
 					event.preventDefault();
-
-					lon = ( onPointerDownPointerX - event.touches[0].pageX ) * 0.1 + onPointerDownLon;
-					lat = ( event.touches[0].pageY - onPointerDownPointerY ) * 0.1 + onPointerDownLat;
+					var move = .1;
+					if(!webGL){
+						move = .5;
+						}
+					lon = ( onPointerDownPointerX - event.touches[0].pageX ) * move + onPointerDownLon;
+					lat = ( event.touches[0].pageY - onPointerDownPointerY ) * move + onPointerDownLat;
 
 				}
 
@@ -200,27 +235,28 @@ var fishEye={};
 			}
 
 			function update() {
-				if ( isUserInteracting === false ) {
-
-					lon += 0.1*window.devicePixelRatio;
-
-				}
-
-				lat = Math.max( - 85, Math.min( 85, lat ) );
-				phi = THREE.Math.degToRad( 90 - lat );
-				theta = THREE.Math.degToRad( lon );
-
-				target.x = 500 * Math.sin( phi ) * Math.cos( theta );
-				target.y = 500 * Math.cos( phi );
-				target.z = 500 * Math.sin( phi ) * Math.sin( theta );
-				$.each(containerDom,function(u,v){
+						if ( isUserInteracting === false ) {
+							var addLon=0.1;
+							if(!webGL){
+								addLon=1
+								}
+							lon += addLon;
+						}
+		
+						lat = Math.max( - 85, Math.min( 85, lat ) );
+						phi = THREE.Math.degToRad( 90 - lat );
+						theta = THREE.Math.degToRad( lon );
+		
+						target.x = 500 * Math.sin( phi ) * Math.cos( theta );
+						target.y = 500 * Math.cos( phi );
+						target.z = 500 * Math.sin( phi ) * Math.sin( theta );
+						
+						$.each(containerDom,function(u,v){
 					camera[u].position.copy( target ).negate();
 				camera[u].lookAt( target );
 
 				renderer[u].render( scene[u], camera[u] );
 					})
-				
-
 			}
 					
 			
