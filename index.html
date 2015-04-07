@@ -19,18 +19,180 @@
 				font-size:13px;
 				font-weight: bold;
 				text-align:center;
-				z-index: 9999
+				z-index: 5
 			}
 			#containerA{
 				position:absolute;
 				width:100%;
-				z-index:999;
+				z-index:3;
 				opacity:0;
 				top:0px;
 				left:0px;}
 			a {
 				color: #ffffff;
 			}
+			@media all and (orientation : portrait) { 
+#popFrame{
+				width:100%;
+				background-color: #fff;
+				position: absolute;
+				top:2rem;
+				left:0px;
+				z-index: 4;
+				display: none;
+			}
+			#popHead{
+				height:2rem;
+				text-align: center;
+				line-height: 2rem;
+				font-size: 1.5rem;
+				border-bottom: 1px solid #666;
+			}
+			.clear{
+				clear:both;
+			}
+			.popLeft{
+				width:4.5rem;
+				height:4.5rem;
+				float: left;
+				margin-left: .5rem;
+				margin-top:.5rem; 
+			}
+			.popRight{
+				width:10rem;
+				float: left;
+				margin-left: .5rem;
+				margin-top:.5rem; 
+			}
+			.goodTitle{
+				font-size: .8rem
+			}
+			.goodPrice{
+				margin-top: .4rem;
+				font-size: .8rem;
+				color:#dc5210;
+			}
+			.goodSize{
+				margin-top: .4rem;
+				font-size: .8rem;
+			}
+			#popFoot{
+				padding-top: 2rem;
+				padding-bottom: 2rem
+			}
+			.popButton{
+				width:6rem;
+				height:2rem;
+				color: #fff;
+				background-color: #f18d3d;
+				margin: auto;
+				text-align: center;
+				line-height: 2rem;
+				border-radius: .2rem
+			}
+			.popButtonIcon{
+				float: left;
+				width:1rem;
+				height:1rem;
+				margin-top: .4rem;
+				margin-left: .4rem;
+			}
+			.popButtonName{
+				float: left;
+				margin-left: .1rem;
+			}
+			#popClose{
+				position: absolute;
+				top:.2rem;
+				right:.2rem;
+				width:1.6rem;
+				height:1.6rem;
+
+			}
+			}
+			
+			@media all and (orientation : landscape) { 
+#popFrame{
+				width:100%;
+				background-color: #fff;
+				position: absolute;
+				top:1rem;
+				left:0px;
+				z-index: 4;
+				display: none;
+			}
+			#popHead{
+				height:1rem;
+				text-align: center;
+				line-height: 1rem;
+				font-size: .75rem;
+				border-bottom: 1px solid #666;
+			}
+			.clear{
+				clear:both;
+			}
+			.popLeft{
+				width:2.25rem;
+				height:2.25rem;
+				float: left;
+				margin-left: .25rem;
+				margin-top:.25rem; 
+			}
+			.popRight{
+				width:13rem;
+				float: left;
+				margin-left: .25rem;
+				margin-top:.25rem; 
+			}
+			.goodTitle{
+				margin-top: .1rem;
+				font-size: .6rem
+			}
+			.goodPrice{
+				margin-top: .2rem;
+				font-size: .4rem;
+				color:#dc5210;
+			}
+			.goodSize{
+				margin-top: .2rem;
+				font-size: .4rem;
+			}
+			#popFoot{
+				padding-top: 1rem;
+				padding-bottom: 1rem
+			}
+			.popButton{
+				width:3rem;
+				height:1rem;
+				color: #fff;
+				background-color: #f18d3d;
+				margin: auto;
+				text-align: center;
+				line-height: 1rem;
+				border-radius: .1rem
+			}
+			.popButtonIcon{
+				float: left;
+				width:.5rem;
+				height:.5rem;
+				margin-top: .2rem;
+				margin-left: .2rem;
+			}
+			.popButtonName{
+				font-size: .5rem;
+				float: left;
+				margin-left: .05rem;
+			}
+			#popClose{
+				position: absolute;
+				top:.1rem;
+				right:.1rem;
+				width:.8rem;
+				height:.8rem;
+
+			}
+			}
+
 		</style>
         <script type="text/javascript" src="js/zepto/zepto.js"></script>
         <script type="text/javascript" src="js/zepto/detect.js"></script>
@@ -53,7 +215,33 @@
 
 		<div id="container"></div>
         <div id="containerA"></div>
+        <div id="popFrame">
+        	<img id="popClose" src="texture/close.png"/>
+        	<div id="popHead">
+        		商品详情
+        	</div>
+        	<div id="popMain">
+        		<img src="http://" class="popLeft"/>
+        		<div class="popRight">
+        			<div class="goodTitle">
+        				穆尼思单茶几简约现代小茶几小户型茶几创...
+        			</div>
+        			<div class="goodPrice">￥2900</div>
+        			<div class="goodSize">规格：2900*500*600</div>
+        		</div>
+        		<div class="clear"></div>
+        	</div>
+        	<div id="popFoot">
+        		<div class="popButton">
+        			<img class="popButtonIcon" src="texture/star.png"/>
+        			<div class="popButtonName">加入收藏</div>
+        			<div class="clear"></div>
+        		</div>
+        	</div>
+        </div>
+        <!--
 		<div id="info">请点击建筑</div>
+		-->
 
 
 		<script>
@@ -61,15 +249,15 @@
 			var textureGroup = {
 					"#255#255#255" : {
 						texture : [/*[展示层,id通道层]*/
-							["texture/pisa/px.gif","texture/pisa/nx.gif","texture/pisa/py.gif","texture/pisa/ny.gif","texture/pisa/pz.gif","texture/pisa/nz.gif"],/*右，左，上，下，前，后*/
-							["texture/pisa/pxa.gif","texture/pisa/nxa.gif","texture/pisa/pya.gif","texture/pisa/nya.gif","texture/pisa/pza.gif","texture/pisa/nza.gif"]/*右，左，上，下，前，后*/
+							["texture/kj01/px.png","texture/kj01/nx.png","texture/kj01/py.png","texture/kj01/ny.png","texture/kj01/pz.png","texture/kj01/nz.png"],/*右，左，上，下，前，后*/
+							["texture/kj01/pxa.gif","texture/kj01/nxa.gif","texture/kj01/pya.gif","texture/kj01/nya.gif","texture/kj01/pza.gif","texture/kj01/nza.gif"]/*右，左，上，下，前，后*/
 						],
 						data : {}/*返回后台的数据*/
 					},
-                    "#255#0#0" : {
+                    "#127#63#127" : {
                         texture : [/*[展示层,id通道层]*/
-                            ["texture/skybox/px.gif","texture/skybox/nx.gif","texture/skybox/py.gif","texture/skybox/ny.gif","texture/skybox/pz.gif","texture/skybox/nz.gif"],/*右，左，上，下，前，后*/
-                            ["texture/skybox/px.gif","texture/skybox/nx.gif","texture/skybox/py.gif","texture/skybox/ny.gif","texture/skybox/pz.gif","texture/skybox/nz.gif"]/*右，左，上，下，前，后*/
+                            ["texture/02/px.jpg","texture/02/nx.jpg","texture/02/py.jpg","texture/02/ny.jpg","texture/02/pz.jpg","texture/02/nz.jpg"],/*右，左，上，下，前，后*/
+                            ["texture/02/pxa.gif","texture/02/nxa.gif","texture/02/pya.gif","texture/02/nya.gif","texture/02/pza.gif","texture/02/nza.gif"]/*右，左，上，下，前，后*/
                         ],
                         data : {}/*返回后台的数据*/
                     }
@@ -83,7 +271,11 @@
 				};
 				
 			fishEye.setContainer(["container","containerA"]);/*[展示层,id通道层]*/
-			fishEye.reload3D(textureGroup["#255#255#255"]);/*默认展示的空间*/
+			function changeSpace(color){
+				fishEye.nowColor=color;
+				fishEye.reload3D(textureGroup[color]);/*默认展示的空间*/
+			}
+			changeSpace("#255#255#255")
 			
             /*触摸事件*/
 			$("#containerA").on("touchstart",function(e){
@@ -95,15 +287,21 @@
 				e.stopPropagation();
 				e.preventDefault();
         		var endTime = new Date().getTime();
-        		if((endTime - $(this).data("touchTime")) < 600){/*点击才触发*/
+        		if((endTime - $(this).data("touchTime")) < 300){/*点击才触发*/
                     var selectColor = fishEye.getColor($(this).data("touchPoint"),1);/*[坐标，层号]获得色植*/
-        			$("#info").html(selectColor);
+        			//$("#info").html(selectColor);
                     if(textureGroup[selectColor]){
-                        fishEye.reload3D(textureGroup[selectColor]);/*换场景*/
-                    };
+                    	changeSpace(selectColor)/*换场景*/
+                    }
+                    else if(descriptionGroup[selectColor]){
+                    	$("#popFrame").show();
+                    }
         		};
     		});
-			
+			$("html").css("font-size",$(window).width()/320*20);
+			$("#popClose").on("touchstart",function(){
+				$("#popFrame").hide();
+			})
 		</script>
 	</body>
 </html>

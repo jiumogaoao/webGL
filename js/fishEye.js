@@ -82,14 +82,14 @@ var fishEye={};
 				
 					})			
 
-				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
-				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-				document.addEventListener( 'mouseup', onDocumentMouseUp, false );
-				document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
-				document.addEventListener( 'DOMMouseScroll', onDocumentMouseWheel, false);
+				document.getElementById( "containerA" ).addEventListener( 'mousedown', onDocumentMouseDown, false );
+				document.getElementById( "containerA" ).addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.getElementById( "containerA" ).addEventListener( 'mouseup', onDocumentMouseUp, false );
+				document.getElementById( "containerA" ).addEventListener( 'mousewheel', onDocumentMouseWheel, false );
+				document.getElementById( "containerA" ).addEventListener( 'DOMMouseScroll', onDocumentMouseWheel, false);
 
-				document.addEventListener( 'touchstart', onDocumentTouchStart, false );
-				document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+				document.getElementById( "containerA" ).addEventListener( 'touchstart', onDocumentTouchStart, false );
+				document.getElementById( "containerA" ).addEventListener( 'touchmove', onDocumentTouchMove, false );
 
 				//
 
@@ -98,6 +98,7 @@ var fishEye={};
 			}
 			
 	function onWindowResize() {
+				$("html").css("font-size",$(window).width()/320*20);
 				$.each(containerDom,function(u,v){
 					camera[u].aspect = window.innerWidth / window.innerHeight;
 				camera[u].updateProjectionMatrix();
@@ -110,7 +111,7 @@ var fishEye={};
 	function loadTexture( path ) {
 
 				var texture = new THREE.Texture( texture_placeholder );
-				var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+				var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 1.5 } );
 
 				var image = new Image();
 				image.onload = function () {
@@ -289,4 +290,5 @@ var fishEye={};
 	fishEye.reload3D = reload3D;
 	fishEye.setContainer = setContainer;
 	fishEye.getColor = getColor;
+	fishEye.nowColor = null; 
 	})();
