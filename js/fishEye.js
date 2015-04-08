@@ -43,13 +43,13 @@ var fishEye={};
 					
 					container = document.getElementById( v );
 					
-					camera[u] = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
+					camera[u] = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 1100 );
 					
 					scene[u] = new THREE.Scene();
 					
 					texture_placeholder = document.createElement( 'canvas' );
-				texture_placeholder.width = 16;
-				texture_placeholder.height = 16;
+				texture_placeholder.width = 512;
+				texture_placeholder.height = 512;
 				
 				var context = texture_placeholder.getContext( '2d' );
 				context.fillStyle = 'rgb( 200, 200, 200 )';
@@ -57,7 +57,7 @@ var fishEye={};
 				
 				var materials = pic[u];
 				
-				mesh = new THREE.Mesh( new THREE.BoxGeometry( 600, 600, 600, 3, 3, 3 ), new THREE.MeshFaceMaterial( materials ) );
+				mesh = new THREE.Mesh( new THREE.BoxGeometry( 600, 600, 600, 7, 7, 7 ), new THREE.MeshFaceMaterial( materials ) );
 				mesh.scale.x = - 1;
 				scene[u].add( mesh );
 				for ( var i = 0, l = mesh.geometry.vertices.length; i < l; i ++ ) {
@@ -270,7 +270,7 @@ var fishEye={};
 					});
 				});
 				init();
-				animate();
+				
 				};
 	function setContainer(containerGroup){
 		containerDom = containerGroup;
@@ -291,4 +291,5 @@ var fishEye={};
 	fishEye.setContainer = setContainer;
 	fishEye.getColor = getColor;
 	fishEye.nowColor = null; 
+	fishEye.animate = animate;
 	})();

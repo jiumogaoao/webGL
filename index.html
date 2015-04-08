@@ -247,17 +247,17 @@
 		<script>
 			/*空间贴图,热区*/	
 			var textureGroup = {
-					"#255#255#255" : {
+					"#225#225#0" : {
 						texture : [/*[展示层,id通道层]*/
 							["texture/kj01/px.png","texture/kj01/nx.png","texture/kj01/py.png","texture/kj01/ny.png","texture/kj01/pz.png","texture/kj01/nz.png"],/*右，左，上，下，前，后*/
-							["texture/kj01/pxa.gif","texture/kj01/nxa.gif","texture/kj01/pya.gif","texture/kj01/nya.gif","texture/kj01/pza.gif","texture/kj01/nza.gif"]/*右，左，上，下，前，后*/
+							["texture/kj01/pxa.png","texture/kj01/nxa.png","texture/kj01/pya.png","texture/kj01/nya.png","texture/kj01/pza.png","texture/kj01/nza.png"]/*右，左，上，下，前，后*/
 						],
 						data : {}/*返回后台的数据*/
 					},
-                    "#127#63#127" : {
+                    "#128#64#128" : {
                         texture : [/*[展示层,id通道层]*/
                             ["texture/02/px.jpg","texture/02/nx.jpg","texture/02/py.jpg","texture/02/ny.jpg","texture/02/pz.jpg","texture/02/nz.jpg"],/*右，左，上，下，前，后*/
-                            ["texture/02/pxa.gif","texture/02/nxa.gif","texture/02/pya.gif","texture/02/nya.gif","texture/02/pza.gif","texture/02/nza.gif"]/*右，左，上，下，前，后*/
+                            ["texture/02/pxa.png","texture/02/nxa.png","texture/02/pya.png","texture/02/nya.png","texture/02/pza.png","texture/02/nza.png"]/*右，左，上，下，前，后*/
                         ],
                         data : {}/*返回后台的数据*/
                     }
@@ -275,8 +275,8 @@
 				fishEye.nowColor=color;
 				fishEye.reload3D(textureGroup[color]);/*默认展示的空间*/
 			}
-			changeSpace("#255#255#255")
-			
+			changeSpace("#225#225#0")
+			fishEye.animate();
             /*触摸事件*/
 			$("#containerA").on("touchstart",function(e){
 				e.preventDefault();
