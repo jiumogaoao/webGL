@@ -32,7 +32,7 @@
 				color: #ffffff;
 			}
 			@media all and (orientation : portrait) { 
-#popFrame{
+.popFrame{
 				width:100%;
 				background-color: #fff;
 				position: absolute;
@@ -41,12 +41,16 @@
 				z-index: 4;
 				display: none;
 			}
-			#popHead{
+			.popMain{width:100%;}
+			.popHead{
 				height:2rem;
 				text-align: center;
 				line-height: 2rem;
 				font-size: 1.5rem;
 				border-bottom: 1px solid #666;
+			}
+			#pop2D .popHead{
+				font-size:.7rem;
 			}
 			.clear{
 				clear:both;
@@ -76,7 +80,7 @@
 				margin-top: .4rem;
 				font-size: .8rem;
 			}
-			#popFoot{
+			.popFoot{
 				padding-top: 2rem;
 				padding-bottom: 2rem
 			}
@@ -101,7 +105,7 @@
 				float: left;
 				margin-left: .1rem;
 			}
-			#popClose{
+			.popClose{
 				position: absolute;
 				top:.2rem;
 				right:.2rem;
@@ -109,10 +113,21 @@
 				height:1.6rem;
 
 			}
+			#navOpen{
+				width:3.5rem;
+				height:3.5rem;
+				position: absolute;
+				bottom:1rem;
+				left:1rem;
+				z-index: 4;
+			}
+			#nav2D{
+				position: relative;
+			}
 			}
 			
 			@media all and (orientation : landscape) { 
-#popFrame{
+.popFrame{
 				width:100%;
 				background-color: #fff;
 				position: absolute;
@@ -121,7 +136,12 @@
 				z-index: 4;
 				display: none;
 			}
-			#popHead{
+			.popMain{width:100%;}
+
+			#pop2D.popFrame{
+				top:0px;
+			}
+			.popHead{
 				height:1rem;
 				text-align: center;
 				line-height: 1rem;
@@ -157,7 +177,7 @@
 				margin-top: .2rem;
 				font-size: .4rem;
 			}
-			#popFoot{
+			.popFoot{
 				padding-top: 1rem;
 				padding-bottom: 1rem
 			}
@@ -183,7 +203,7 @@
 				float: left;
 				margin-left: .05rem;
 			}
-			#popClose{
+			.popClose{
 				position: absolute;
 				top:.1rem;
 				right:.1rem;
@@ -191,10 +211,23 @@
 				height:.8rem;
 
 			}
+			#navOpen{
+				width:1.5rem;
+				height:1.5rem;
+				position: absolute;
+				bottom:.5rem;
+				left:.5rem;
+				z-index: 4;
+			}
+			#nav2D{
+				position: relative;
+				display: block;
+				margin: auto;
+			}
 			}
 
 		</style>
-        <script type="text/javascript" src="js/zepto/zepto.js"></script>
+		<script type="text/javascript" src="js/zepto/zepto.js"></script>
         <script type="text/javascript" src="js/zepto/detect.js"></script>
         <script type="text/javascript" src="js/zepto/event.js"></script>
         <script type="text/javascript" src="js/zepto/ajax.js"></script>
@@ -210,17 +243,20 @@
 		<script type="text/javascript" src="js/renderers/Projector.js"></script>
 		<script type="text/javascript" src="js/renderers/CanvasRenderer.js"></script>
         <script type="text/javascript" src="js/fishEye.js"></script>
+        <script type="text/javascript" src="js/easeljs-NEXT.combined.js"></script>	
+        <script type="text/javascript" src="js/hotArea.js"></script>
+        <script type="text/javascript" src="js/pageFactory.js"></script>
 	</head>
 	<body>
 
 		<div id="container"></div>
         <div id="containerA"></div>
-        <div id="popFrame">
-        	<img id="popClose" src="texture/close.png"/>
-        	<div id="popHead">
+        <div class="popFrame" id="pop3D">
+        	<img class="popClose" src="texture/close.png"/>
+        	<div class="popHead">
         		商品详情
         	</div>
-        	<div id="popMain">
+        	<div class="popMain">
         		<img src="http://" class="popLeft"/>
         		<div class="popRight">
         			<div class="goodTitle">
@@ -231,7 +267,7 @@
         		</div>
         		<div class="clear"></div>
         	</div>
-        	<div id="popFoot">
+        	<div class="popFoot">
         		<div class="popButton">
         			<img class="popButtonIcon" src="texture/star.png"/>
         			<div class="popButtonName">加入收藏</div>
@@ -239,44 +275,52 @@
         		</div>
         	</div>
         </div>
+        <div class="popFrame" id="pop2D">
+        	<img class="popClose" src="texture/close.png"/>
+        	<div class="popHead">
+        		山东泰州西式花园三室一厅
+        	</div>
+        	<div class="popMain">
+        		<canvas id="nav2D"></canvas>
+        	</div>
+        	<div class="popFoot">
+        		<div class="popButton">
+        			<img class="popButtonIcon" src="texture/star.png"/>
+        			<div class="popButtonName">加入收藏</div>
+        			<div class="clear"></div>
+        		</div>
+        	</div>
+        </div>
+        <img id="navOpen" src="texture/open.png"/>
         <!--
 		<div id="info">请点击建筑</div>
 		-->
 
 
 		<script>
-			/*空间贴图,热区*/	
-			var textureGroup = {
-					"#225#225#0" : {
-						texture : [/*[展示层,id通道层]*/
-							["texture/kj01/px.png","texture/kj01/nx.png","texture/kj01/py.png","texture/kj01/ny.png","texture/kj01/pz.png","texture/kj01/nz.png"],/*右，左，上，下，前，后*/
-							["texture/kj01/pxa.png","texture/kj01/nxa.png","texture/kj01/pya.png","texture/kj01/nya.png","texture/kj01/pza.png","texture/kj01/nza.png"]/*右，左，上，下，前，后*/
-						],
-						data : {}/*返回后台的数据*/
-					},
-                    "#128#64#128" : {
-                        texture : [/*[展示层,id通道层]*/
-                            ["texture/02/px.jpg","texture/02/nx.jpg","texture/02/py.jpg","texture/02/ny.jpg","texture/02/pz.jpg","texture/02/nz.jpg"],/*右，左，上，下，前，后*/
-                            ["texture/02/pxa.png","texture/02/nxa.png","texture/02/pya.png","texture/02/nya.png","texture/02/pza.png","texture/02/nza.png"]/*右，左，上，下，前，后*/
-                        ],
-                        data : {}/*返回后台的数据*/
-                    }
-				};
-            /*描述,标签*/
-			var descriptionGroup = {
-					"#255#255#255" : {
-						description : "描述",/*出现的标签*/
-						data : {}/*返回后台的数据*/
-					}
-				};
-				
-			fishEye.setContainer(["container","containerA"]);/*[展示层,id通道层]*/
-			function changeSpace(color){
-				fishEye.nowColor=color;
-				fishEye.reload3D(textureGroup[color]);/*默认展示的空间*/
-			}
-			changeSpace("#225#225#0")
-			fishEye.animate();
+
+		//document.domain="3vjia.com";
+		var returnData;
+			
+			var returnDataA={
+			image:"texture/plan.jpg",
+			hotArray:[
+    			{
+    				area:[[89, 74],[142, 74],[142, 99],[232,98],[233,184],[114,187],[113,152],[90,150]],
+    				data:{
+    					color:"#225#225#0"
+    				}
+    			},
+    			{
+    				area:[[300, 168],[297, 88],[291, 65],[265,72],[264,96],[238,97],[241,152],[254,150],[255,168]],
+    				data:{
+    					color:"#128#64#128"
+    				}
+    			}
+    	]
+		}
+
+			
             /*触摸事件*/
 			$("#containerA").on("touchstart",function(e){
 				e.preventDefault();
@@ -290,18 +334,104 @@
         		if((endTime - $(this).data("touchTime")) < 300){/*点击才触发*/
                     var selectColor = fishEye.getColor($(this).data("touchPoint"),1);/*[坐标，层号]获得色植*/
         			//$("#info").html(selectColor);
-                    if(textureGroup[selectColor]){
+                    if(returnData[selectColor]){
                     	changeSpace(selectColor)/*换场景*/
                     }
-                    else if(descriptionGroup[selectColor]){
-                    	$("#popFrame").show();
+                    else if(returnData[fishEye.nowColor].data[selectColor]){
+                    	debugger;
+                    	var selectData=returnData[fishEye.nowColor].data[selectColor];
+                    	$("#pop3D .goodTitle").text(selectData.data.Name);
+                    	$("#pop3D .goodPrice").text(selectData.data.Price);
+                    	$("#pop3D .goodSize").text("规格："+selectData.data.Size);
+                    	$("#pop3D .popLeft").attr("src",selectData.image)
+                    	$("#pop3D").show();
                     }
         		};
     		});
+
+			var nav2D = new autoHotArea();
+	    	nav2D.setContainer("nav2D");
+	    	nav2D.setWidth(653);
+	    	nav2D.setHeight(543);
+	    	nav2D.init();
+	    	nav2D.reload(returnDataA)
+	    	
 			$("html").css("font-size",$(window).width()/320*20);
-			$("#popClose").on("touchstart",function(){
-				$("#popFrame").hide();
+			$("#pop3D .popClose").on("touchstart",function(){
+				$(".popFrame").hide();
 			})
+			$("#pop2D .popClose").on("touchstart",function(){
+				$("#navOpen").data("open",false)
+					$("#pop2D").hide();
+			})
+			$("#navOpen").on("touchstart",function(){
+				if($(this).data("open")){
+					$(this).data("open",false)
+					$("#pop2D").hide();
+				}else{
+					$(this).data("open",true)
+					$("#pop2D").show();
+				}
+				
+			})
+			var rTimeout=setTimeout(function(){
+				if($(window).height()<$(window).width()){
+					var smallWidth=$(window).width()*.6
+				$("#nav2D").width(smallWidth)
+				$("#nav2D").height(543*($(window).width()/653)*.6)
+				//$("#nav2D").css("left",($(window).width()-smallWidth)/2);
+			}else{
+				$("#nav2D").width($(window).width())
+				$("#nav2D").height(543*($(window).width()/653))
+				$("#nav2D").css("left",0);
+			}
+			},300)
+			
+			
+			function onWindowResize(){
+			//nav2D.setSize($(window).width()/653);
+			if($(window).height()<$(window).width()){
+				$("#nav2D").width($(window).width()*.6)
+				$("#nav2D").height(543*($(window).width()/653)*.6)
+				//$("#nav2D").css("left",($(window).width()-$("#nav2D").width())/2);
+			}else{
+				$("#nav2D").width($(window).width())
+				$("#nav2D").height(543*($(window).width()/653))
+				$("#nav2D").css("left",0);
+			}
+		}
+		window.addEventListener( 'resize', onWindowResize, false );
+		var schemeid='"00032473"'
+		var sendData= '{authCode:"OnxA/jxTBSM91jGmGyREdSjObIc4Z8d2hA/95UiyOSLBUSTAYHKq75hcxsHuN5VsKCJQqB6QpbSH77xgY9lWTBs0nNajsDLpfBAVdB0bqO+RrbEhCgms7bsfclnY+XFn",schemeid:'+schemeid+'}';
+		$.ajax({
+          url: "http://test.3vjia.com/Web3D.axd",
+          type:'GET',
+          dataType: 'jsonp',
+          data:{
+          	command:"ProductRGBRelation/GetRelationList360File",
+          	params:sendData  	
+      },
+          success: function(data) {
+              if(data.Status == "200"){
+              	returnData=JSON.parse(data.JSON);
+              	console.log(returnData)
+              	fishEye.setContainer(["container","containerA"]);/*[展示层,id通道层]*/
+              	fishEye.setSourURL("http://test.3vjia.com");
+			function changeSpace(color){
+				fishEye.nowColor=color;
+				fishEye.reload3D(returnData[color]);/*默认展示的空间*/
+			}
+			changeSpace("#255#255#254")
+				fishEye.animate();
+              }else{
+              	alert("err"+data.Status)
+              }
+          },
+          error: function() { 
+              alert("网络繁忙，请重试！"); 
+          }
+      });
+		
 		</script>
 	</body>
 </html>

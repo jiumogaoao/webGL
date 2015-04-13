@@ -24,7 +24,7 @@ if(!requestAnimationFrame){
 	}
 var fishEye={};
 ;(function(){
-	var camera=[], scene=[], renderer=[],pic=[],containerDom=[],webGL=webglAvailable();
+	var camera=[], scene=[], renderer=[],pic=[],containerDom=[],webGL=webglAvailable(),sourURL="http://localhost";
 	
 	var texture_placeholder,
 			isUserInteracting = false,
@@ -114,13 +114,14 @@ var fishEye={};
 				var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 1.5 } );
 
 				var image = new Image();
+				image.crossOrigin='';
 				image.onload = function () {
 
 					texture.image = this;
 					texture.needsUpdate = true;
 
 				};
-				image.src = path;
+				image.src = sourURL+path;
 
 				return material;
 
@@ -292,4 +293,7 @@ var fishEye={};
 	fishEye.getColor = getColor;
 	fishEye.nowColor = null; 
 	fishEye.animate = animate;
+	fishEye.setSourURL = function(url){
+		sourURL=url
+	}
 	})();
