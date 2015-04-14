@@ -43,7 +43,7 @@ var fishEye={};
 					
 					container = document.getElementById( v );
 					
-					camera[u] = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 1100 );
+					camera[u] = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1100 );
 					
 					scene[u] = new THREE.Scene();
 					
@@ -240,7 +240,7 @@ var fishEye={};
 						if ( isUserInteracting === false ) {
 							var addLon=0.1;
 							if(!webGL){
-								addLon=1
+								addLon=0.3*window.devicePixelRatio
 								}
 							lon += addLon;
 						}
