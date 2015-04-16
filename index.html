@@ -291,14 +291,12 @@
         	</div>
         </div>
         <img id="navOpen" src="texture/open.png"/>
-        <!--
-		<div id="info">请点击建筑</div>
-		-->
+
 
 
 		<script>
 
-		//document.domain="3vjia.com";
+		
 		var returnData;
 			
 			var returnDataA
@@ -340,7 +338,7 @@
         		var endTime = new Date().getTime();
         		if((endTime - $(this).data("touchTime")) < 300){/*点击才触发*/
                     var selectColor = fishEye.getColor($(this).data("touchPoint"),1);/*[坐标，层号]获得色植*/
-        			//$("#info").html(selectColor);
+        			
                     if(returnData[selectColor]){
                     	changeSpace(selectColor)/*换场景*/
                     }
@@ -414,7 +412,7 @@
 
 
 		var schemeidA='"00031156"'
-		var sendDataA= '{authCode:"OnxA/jxTBSM91jGmGyREdSjObIc4Z8d2hA/95UiyOSLBUSTAYHKq75hcxsHuN5VsKCJQqB6QpbSH77xgY9lWTBs0nNajsDLpfBAVdB0bqO+RrbEhCgms7bsfclnY+XFn",imgRoomLength:"250",imgRoomWidth:"250",schemeid:'+schemeidA+',buildingRoomModelId:"00102321"}';
+		var sendDataA= '{authCode:"OnxA/jxTBSM91jGmGyREdSjObIc4Z8d2hA/95UiyOSLBUSTAYHKq75hcxsHuN5VsKCJQqB6QpbSH77xgY9lWTBs0nNajsDLpfBAVdB0bqO+RrbEhCgms7bsfclnY+XFn",imgRoomLength:"1132",imgRoomWidth:"1600",schemeid:'+schemeidA+',buildingRoomModelId:"00102321"}';
 		$.ajax({
           url: "http://test.3vjia.com/mnmnh.axd",
           type:'GET',
@@ -432,8 +430,8 @@
 		    	nav2D.init();
 		    	nav2D.defaultP(1);
 		    	nav2D.clfn=function(data){
-		    		console.log(data);
-		    		$("#navOpen").click();
+		    		$("#navOpen").data("open",false)
+					$("#pop2D").hide();
 		    	}
 		    	nav2D.reload(returnDataA.hotDotData);
 	    		var rTimeout=setTimeout(function(){
@@ -441,7 +439,7 @@
 					var smallWidth=$(window).width()*.6
 				$("#nav2D").width(smallWidth)
 				$("#nav2D").height((nav2D.getHeight())*($(window).width()/(nav2D.getWidth()))*.6)
-				//$("#nav2D").css("left",($(window).width()-smallWidth)/2);
+				
 			}else{
 				$("#nav2D").width($(window).width())
 				$("#nav2D").height((nav2D.getHeight())*($(window).width()/(nav2D.getWidth())))
@@ -451,11 +449,11 @@
 			
 			
 			function onWindowResize(){
-			//nav2D.setSize($(window).width()/653);
+			
 			if($(window).height()<$(window).width()){
 				$("#nav2D").width($(window).width()*.6)
 				$("#nav2D").height((nav2D.getHeight())*($(window).width()/(nav2D.getWidth()))*.6)
-				//$("#nav2D").css("left",($(window).width()-$("#nav2D").width())/2);
+				
 			}else{
 				$("#nav2D").width($(window).width())
 				$("#nav2D").height((nav2D.getHeight())*($(window).width()/(nav2D.getWidth())))

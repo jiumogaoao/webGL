@@ -269,7 +269,7 @@ var fishEye={};
 						if ( isUserInteracting === false ) {
 							var addLon=0.1;
 							if(!webGL){
-								addLon=0.3*window.devicePixelRatio
+								addLon=0.1*window.devicePixelRatio
 								}
 							lon += addLon;
 						}

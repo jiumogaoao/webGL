@@ -35,7 +35,7 @@ var autoHotArea=function(){
 	function reload(data){
 		conA.removeAllChildren();
 		conB.removeAllChildren();
-		data.image=data.image.replace(".jpg","_250x250.jpg");
+		//data.image=data.image.replace(".jpg","_250x250.jpg");
 		img.src = sourURL+data.image;
 		$.each(data.hotArray,function(i,n){
     		var hotArea = new createjs.Shape();
