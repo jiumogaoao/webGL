@@ -195,7 +195,6 @@ var fishEye={};
 			function onDocumentMouseWheel( event ) {
 				$.each(containerDom,function(u,v){
 					// WebKit
-
 				if ( event.wheelDeltaY ) {
 
 					camera[u].fov -= event.wheelDeltaY * 0.05;
@@ -213,7 +212,12 @@ var fishEye={};
 					camera[u].fov -= event.detail * 0.05;
 
 				}
-
+				if(camera[u].fov<1){
+					camera[u].fov=1
+				}
+				if(camera[u].fov>179){
+					camera[u].fov=179
+				}
 				camera[u].updateProjectionMatrix();
 					})
 				
