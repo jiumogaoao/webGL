@@ -1,13 +1,16 @@
 var autoHotArea=function(){
-	var container,stage,width=100,height=100,conA= new createjs.Container(),conB= new createjs.Container(),img= new Image()
+	var container,stage,width=100,height=100,conA= new createjs.Container(),conB= new createjs.Container(),img= new Image(),sourURL="http://localhost",defaultP=0,notouch=true;
 	function init(){
 		var canvas = document.getElementById(container);
     	stage = new createjs.Stage(canvas);
-    	canvas.width = width;
-    	canvas.height = height;
+    	
     	stage.addChild(conA);
     	stage.addChild(conB);
     	img.onload=function(){
+    		width=img.width;
+    		height=img.height;
+    		canvas.width = width;
+    		canvas.height = height;
 				bg=new createjs.Bitmap(img);
 				conA.addChild(bg); 	
     		};
@@ -18,9 +21,12 @@ var autoHotArea=function(){
 
 			for (var i=0; i<l; i++) {
 				var child = conB.getChildAt(i);
-				child.alpha = 0;
+				if(!notouch){
+					child.alpha = 0;
+				}
+				
 				var pt = child.globalToLocal(stage.mouseX, stage.mouseY);
-				if (stage.mouseInBounds && child.hitTest(pt.x, pt.y)) { child.alpha = 0.5; };
+				if (stage.mouseInBounds && child.hitTest(pt.x, pt.y)) { notouch=false;child.alpha = 0.5; };
 				stage.update();
 			};
 		};
@@ -28,11 +34,13 @@ var autoHotArea=function(){
 	function reload(data){
 		conA.removeAllChildren();
 		conB.removeAllChildren();
-		img.src = data.image;
+		img.src = sourURL+data.image;
 		$.each(data.hotArray,function(i,n){
     		var hotArea = new createjs.Shape();
     	hotArea.graphics.beginFill("rgb(190,0,0)");
+    	n.area=JSON.parse(n.area);
     		$.each(n.area,function(u,v){
+
     			if(u==0){
     				hotArea.graphics.moveTo(v[0], v[1]);
     			}else{
@@ -41,6 +49,11 @@ var autoHotArea=function(){
     		});
     		hotArea.graphics.lineTo(n.area[0][0],n.area[0][1]);
     		hotArea.data=n.data;
+    		if(i!=defaultP){
+    			hotArea.alpha = 0
+    		}else{
+    			hotArea.alpha = 0.5
+    		}
     		hotArea.on("click",function(even){
     			alert(this.data.color);
     		});
@@ -50,13 +63,18 @@ var autoHotArea=function(){
 	this.setContainer=function(name){
 		container=name;
 	};
-	this.setWidth=function(num){
-		width=num
+	this.getWidth=function(num){
+		return width
 	};
-	this.setHeight=function(num){
-		height=num
+	this.getHeight=function(num){
+		return height
 	};
 	this.init=init;
 	this.reload=reload;
-
+	this.setSourURL = function(url){
+		sourURL=url
+	}
+	this.defaultP = function(data){
+		defaultP = data
+	}
 }

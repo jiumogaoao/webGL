@@ -301,25 +301,7 @@
 		//document.domain="3vjia.com";
 		var returnData;
 			
-			var returnDataA={
-			image:"texture/plan.jpg",
-			hotArray:[
-    			{
-    				area:[[89, 74],[142, 74],[142, 99],[232,98],[233,184],[114,187],[113,152],[90,150]],
-    				data:{
-    					color:"#225#225#0",
-    					name:"",
-    					
-    				}
-    			},
-    			{
-    				area:[[300, 168],[297, 88],[291, 65],[265,72],[264,96],[238,97],[241,152],[254,150],[255,168]],
-    				data:{
-    					color:"#128#64#128"
-    				}
-    			}
-    	]
-		}
+			var returnDataA
 
 			
             /*触摸事件*/
@@ -328,7 +310,31 @@
        			 $(this).data("touchTime",new Date().getTime());
        			 $(this).data("touchPoint",{"pageX":e.touches[0].pageX,"pageY":e.touches[0].pageY});
     		});
+    		$("#containerA").on("mousedown",function(e){
+				e.preventDefault();
+       			 $(this).data("touchTime",new Date().getTime());
+       			 $(this).data("touchPoint",{"pageX":e.pageX,"pageY":e.pageY});
+    		});
 			$("#containerA").on("touchend",function(e){
+				e.stopPropagation();
+				e.preventDefault();
+        		var endTime = new Date().getTime();
+        		if((endTime - $(this).data("touchTime")) < 300){/*点击才触发*/
+                    var selectColor = fishEye.getColor($(this).data("touchPoint"),1);/*[坐标，层号]获得色植*/
+                    if(returnData[selectColor]){
+                    	changeSpace(selectColor)/*换场景*/
+                    }
+                    else if(returnData[fishEye.nowColor].data[selectColor]){
+                    	var selectData=returnData[fishEye.nowColor].data[selectColor];
+                    	$("#pop3D .goodTitle").text(selectData.data.Name);
+                    	$("#pop3D .goodPrice").text(selectData.data.Price);
+                    	$("#pop3D .goodSize").text("规格："+selectData.data.Size);
+                    	$("#pop3D .popLeft").attr("src",selectData.image)
+                    	$("#pop3D").show();
+                    }
+        		};
+    		});
+			$("#containerA").on("mouseup",function(e){
 				e.stopPropagation();
 				e.preventDefault();
         		var endTime = new Date().getTime();
@@ -339,7 +345,6 @@
                     	changeSpace(selectColor)/*换场景*/
                     }
                     else if(returnData[fishEye.nowColor].data[selectColor]){
-                    	debugger;
                     	var selectData=returnData[fishEye.nowColor].data[selectColor];
                     	$("#pop3D .goodTitle").text(selectData.data.Name);
                     	$("#pop3D .goodPrice").text(selectData.data.Price);
@@ -349,23 +354,23 @@
                     }
         		};
     		});
-
-			var nav2D = new autoHotArea();
-	    	nav2D.setContainer("nav2D");
-	    	nav2D.setWidth(653);
-	    	nav2D.setHeight(543);
-	    	nav2D.init();
-	    	nav2D.reload(returnDataA)
+			
 	    	
 			$("html").css("font-size",$(window).width()/320*20);
-			$("#pop3D .popClose").on("touchstart",function(){
+			$("#pop3D .popClose").on("click",function(e){
+				event.stopPropagation();
+					event.preventDefault();
 				$(".popFrame").hide();
 			})
-			$("#pop2D .popClose").on("touchstart",function(){
+			$("#pop2D .popClose").on("click",function(e){
+				event.stopPropagation();
+					event.preventDefault();
 				$("#navOpen").data("open",false)
 					$("#pop2D").hide();
 			})
-			$("#navOpen").on("touchstart",function(){
+			$("#navOpen").on("click",function(e){
+				event.stopPropagation();
+					event.preventDefault();
 				if($(this).data("open")){
 					$(this).data("open",false)
 					$("#pop2D").hide();
@@ -375,34 +380,9 @@
 				}
 				
 			})
-			var rTimeout=setTimeout(function(){
-				if($(window).height()<$(window).width()){
-					var smallWidth=$(window).width()*.6
-				$("#nav2D").width(smallWidth)
-				$("#nav2D").height(543*($(window).width()/653)*.6)
-				//$("#nav2D").css("left",($(window).width()-smallWidth)/2);
-			}else{
-				$("#nav2D").width($(window).width())
-				$("#nav2D").height(543*($(window).width()/653))
-				$("#nav2D").css("left",0);
-			}
-			},300)
+
 			
-			
-			function onWindowResize(){
-			//nav2D.setSize($(window).width()/653);
-			if($(window).height()<$(window).width()){
-				$("#nav2D").width($(window).width()*.6)
-				$("#nav2D").height(543*($(window).width()/653)*.6)
-				//$("#nav2D").css("left",($(window).width()-$("#nav2D").width())/2);
-			}else{
-				$("#nav2D").width($(window).width())
-				$("#nav2D").height(543*($(window).width()/653))
-				$("#nav2D").css("left",0);
-			}
-		}
-		window.addEventListener( 'resize', onWindowResize, false );
-		var schemeid='"00032473"'
+		var schemeid='"00032517"'
 		var sendData= '{authCode:"OnxA/jxTBSM91jGmGyREdSjObIc4Z8d2hA/95UiyOSLBUSTAYHKq75hcxsHuN5VsKCJQqB6QpbSH77xgY9lWTBs0nNajsDLpfBAVdB0bqO+RrbEhCgms7bsfclnY+XFn",schemeid:'+schemeid+'}';
 		$.ajax({
           url: "http://test.3vjia.com/Web3D.axd",
@@ -424,6 +404,63 @@
 			}
 			changeSpace("#255#255#254")
 				fishEye.animate();
+              }else{
+              	alert("err"+data.Status)
+              }
+          },
+          error: function() { 
+              alert("网络繁忙，请重试！"); 
+          }
+      });
+
+
+		var schemeidA='"00031156"'
+		var sendDataA= '{authCode:"OnxA/jxTBSM91jGmGyREdSjObIc4Z8d2hA/95UiyOSLBUSTAYHKq75hcxsHuN5VsKCJQqB6QpbSH77xgY9lWTBs0nNajsDLpfBAVdB0bqO+RrbEhCgms7bsfclnY+XFn",imgRoomLength:"300",imgRoomWidth:"300",schemeid:'+schemeidA+',buildingRoomModelId:"00102321"}';
+		$.ajax({
+          url: "http://test.3vjia.com/mnmnh.axd",
+          type:'GET',
+          dataType: 'jsonp',
+          data:{
+          	command:"building/GetBuildingRoomModelDetail",
+          	params:sendDataA  	
+      },
+          success: function(data) {
+              if(data.Status == "200"){
+              	returnDataA=JSON.parse(data.JSON);
+              	console.log(returnDataA)
+              	var nav2D = new autoHotArea();
+		    	nav2D.setContainer("nav2D");
+		    	nav2D.setSourURL("http://test.3vjia.com");
+		    	nav2D.init();
+		    	nav2D.defaultP(1);
+		    	nav2D.reload(returnDataA.hotDotData);
+	    		var rTimeout=setTimeout(function(){
+				if($(window).height()<$(window).width()){
+					var smallWidth=$(window).width()*.6
+				$("#nav2D").width(smallWidth)
+				$("#nav2D").height((nav2D.getHeight())*($(window).width()/(nav2D.getWidth()))*.6)
+				//$("#nav2D").css("left",($(window).width()-smallWidth)/2);
+			}else{
+				$("#nav2D").width($(window).width())
+				$("#nav2D").height((nav2D.getHeight())*($(window).width()/(nav2D.getWidth())))
+				$("#nav2D").css("left",0);
+			}
+			},300)
+			
+			
+			function onWindowResize(){
+			//nav2D.setSize($(window).width()/653);
+			if($(window).height()<$(window).width()){
+				$("#nav2D").width($(window).width()*.6)
+				$("#nav2D").height((nav2D.getHeight())*($(window).width()/(nav2D.getWidth()))*.6)
+				//$("#nav2D").css("left",($(window).width()-$("#nav2D").width())/2);
+			}else{
+				$("#nav2D").width($(window).width())
+				$("#nav2D").height((nav2D.getHeight())*($(window).width()/(nav2D.getWidth())))
+				$("#nav2D").css("left",0);
+			}
+		}
+		window.addEventListener( 'resize', onWindowResize, false );
               }else{
               	alert("err"+data.Status)
               }
