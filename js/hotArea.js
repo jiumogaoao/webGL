@@ -1,4 +1,5 @@
 var autoHotArea=function(){
+	var that=this;
 	var container,stage,width=100,height=100,conA= new createjs.Container(),conB= new createjs.Container(),img= new Image(),sourURL="http://localhost",defaultP=0,notouch=true;
 	function init(){
 		var canvas = document.getElementById(container);
@@ -34,6 +35,7 @@ var autoHotArea=function(){
 	function reload(data){
 		conA.removeAllChildren();
 		conB.removeAllChildren();
+		data.image=data.image.replace(".jpg","_250x250.jpg");
 		img.src = sourURL+data.image;
 		$.each(data.hotArray,function(i,n){
     		var hotArea = new createjs.Shape();
@@ -55,11 +57,12 @@ var autoHotArea=function(){
     			hotArea.alpha = 0.5
     		}
     		hotArea.on("click",function(even){
-    			alert(this.data.color);
+    			that.clfn(this.data);
     		});
     		conB.addChild(hotArea);
     	});
 	};
+	this.clfn=function(data){debugger;}
 	this.setContainer=function(name){
 		container=name;
 	};

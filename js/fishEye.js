@@ -57,7 +57,7 @@ var fishEye={};
 				
 				var materials = pic[u];
 				
-				mesh = new THREE.Mesh( new THREE.BoxGeometry( 600, 600, 600, 0, 0, 0 ), new THREE.MeshFaceMaterial( materials ) );
+				mesh = new THREE.Mesh( new THREE.BoxGeometry( 600, 600, 600, 7, 7, 7 ), new THREE.MeshFaceMaterial( materials ) );
 				mesh.scale.x = - 1;
 				scene[u].add( mesh );
 				for ( var i = 0, l = mesh.geometry.vertices.length; i < l; i ++ ) {
@@ -77,7 +77,7 @@ var fishEye={};
 					goodT.image = image;
 					goodT.needsUpdate = true;
 
-					$.each(gArray,function(i,n){console.log(n)
+					$.each(gArray,function(i,n){
 						if(n){
 							var particle = new THREE.Sprite( goodMt );
 										particle.position.x = n[0] * 250;
@@ -245,7 +245,7 @@ var fishEye={};
 					event.preventDefault();
 					var move = .1;
 					if(!webGL){
-						move = .5;
+						move = .1;
 						}
 					lon = ( onPointerDownPointerX - event.touches[0].pageX ) * move + onPointerDownLon;
 					lat = ( event.touches[0].pageY - onPointerDownPointerY ) * move + onPointerDownLat;
@@ -262,13 +262,13 @@ var fishEye={};
 			}
 
 			function update() {
-						/*if ( isUserInteracting === false ) {
+						if ( isUserInteracting === false ) {
 							var addLon=0.1;
 							if(!webGL){
 								addLon=0.3*window.devicePixelRatio
 								}
 							lon += addLon;
-						}*/
+						}
 		
 						lat = Math.max( - 85, Math.min( 85, lat ) );
 						phi = THREE.Math.degToRad( 90 - lat );
@@ -343,3 +343,4 @@ var fishEye={};
 	}
 	fishEye.setGood=function(data){gArray=data}
 	})();
+
