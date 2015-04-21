@@ -317,7 +317,7 @@
 				e.stopPropagation();
 				e.preventDefault();
         		var endTime = new Date().getTime();
-        		if((endTime - $(this).data("touchTime")) < 300){/*点击才触发*/
+        		if((endTime - $(this).data("touchTime")) < 200){/*点击才触发*/
                     var selectColor = fishEye.getColor($(this).data("touchPoint"),1);/*[坐标，层号]获得色植*/
                     if(returnData[selectColor]){
                     	changeSpace(selectColor)/*换场景*/
@@ -336,7 +336,7 @@
 				e.stopPropagation();
 				e.preventDefault();
         		var endTime = new Date().getTime();
-        		if((endTime - $(this).data("touchTime")) < 300){/*点击才触发*/
+        		if((endTime - $(this).data("touchTime")) < 200){/*点击才触发*/
                     var selectColor = fishEye.getColor($(this).data("touchPoint"),1);/*[坐标，层号]获得色植*/
         			
                     if(returnData[selectColor]){

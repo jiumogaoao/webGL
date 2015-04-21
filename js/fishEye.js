@@ -56,8 +56,12 @@ var fishEye={};
 				context.fillRect( 0, 0, texture_placeholder.width, texture_placeholder.height );
 				
 				var materials = pic[u];
+				if(!webGL){
+					mesh = new THREE.Mesh( new THREE.BoxGeometry( 600, 600, 600, 9, 9, 9 ), new THREE.MeshFaceMaterial( materials ) );
+					}else{
+					mesh = new THREE.Mesh( new THREE.BoxGeometry( 600, 600, 600, 1, 1, 1 ), new THREE.MeshFaceMaterial( materials ) );
+					}
 				
-				mesh = new THREE.Mesh( new THREE.BoxGeometry( 600, 600, 600, 7, 7, 7 ), new THREE.MeshFaceMaterial( materials ) );
 				mesh.scale.x = - 1;
 				scene[u].add( mesh );
 				for ( var i = 0, l = mesh.geometry.vertices.length; i < l; i ++ ) {
@@ -212,11 +216,11 @@ var fishEye={};
 					camera[u].fov -= event.detail * 0.05;
 
 				}
-				if(camera[u].fov<1){
-					camera[u].fov=1
+				if(camera[u].fov<35){
+					camera[u].fov=35
 				}
-				if(camera[u].fov>179){
-					camera[u].fov=179
+				if(camera[u].fov>70){
+					camera[u].fov=70
 				}
 				camera[u].updateProjectionMatrix();
 					})
@@ -346,5 +350,8 @@ var fishEye={};
 		sourURL=url
 	}
 	fishEye.setGood=function(data){gArray=data}
+	document.oncontextmenu = function() {  
+        event.returnValue = false;  
+    }
 	})();
 
