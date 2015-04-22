@@ -355,18 +355,18 @@
 			
 	    	
 			$("html").css("font-size",$(window).width()/320*20);
-			$("#pop3D .popClose").on("click",function(e){
+			$("#pop3D .popClose").on("click",function(event){
 				event.stopPropagation();
 					event.preventDefault();
 				$(".popFrame").hide();
 			})
-			$("#pop2D .popClose").on("click",function(e){
+			$("#pop2D .popClose").on("click",function(event){
 				event.stopPropagation();
 					event.preventDefault();
 				$("#navOpen").data("open",false)
 					$("#pop2D").hide();
 			})
-			$("#navOpen").on("click",function(e){
+			$("#navOpen").on("click",function(event){
 				event.stopPropagation();
 					event.preventDefault();
 				if($(this).data("open")){
