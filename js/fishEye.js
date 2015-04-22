@@ -253,7 +253,7 @@ var fishEye={};
 					event.preventDefault();
 					var move = .1;
 					if(!webGL){
-						move = .1;
+						move = .5;
 						}
 					lon = ( onPointerDownPointerX - event.touches[0].pageX ) * move + onPointerDownLon;
 					lat = ( event.touches[0].pageY - onPointerDownPointerY ) * move + onPointerDownLat;
