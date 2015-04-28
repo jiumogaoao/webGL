@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>全景</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+		<script type="text/javascript" src="js/zepto/zepto.js"></script>
+        <script type="text/javascript" src="js/zepto/detect.js"></script>
+        <script type="text/javascript" src="js/zepto/event.js"></script>
+        <script type="text/javascript" src="js/zepto/ajax.js"></script>
+        <script type="text/javascript" src="js/zepto/form.js"></script>
+        <script type="text/javascript" src="js/zepto/fx.js"></script>
+        <script type="text/javascript" src="js/zepto/fx_methods.js"></script>
+        <script type="text/javascript" src="js/zepto/data.js"></script>
+        <script type="text/javascript" src="js/zepto/assets.js"></script>
+        <script type="text/javascript" src="js/zepto/selector.js"></script>
+        <script type="text/javascript" src="js/zepto/zTouch.js"></script>		
+        <script type="text/javascript" src="js/easeljs-NEXT.combined.js"></script>	
+        <script type="text/javascript" src="js/overall2d.js"></script>
+        <style type="text/css">
+        body{
+          margin: 0px;
+        }
+        </style>
+	</head>
+	<body>
+
+        		<canvas id="nav2D"></canvas>
+        	
+
+
+
+		<script>
+
+		
+		var returnData;
+			
+			var returnDataA
+
+
+			
+	    	
+			$("html").css("font-size",$(window).width()/320*20);
+
+		returnDataA={
+              		hotDotData:{
+              			image:"texture/overall.jpg",
+              			hotPoint:[
+              				{
+              					point:[150,150],
+                        area:[[100,100],[100,200],[200,200],[200,100]],
+              					data:{
+              						id:"",
+                          door:true,
+              						name:"门1"
+              					}
+              				},
+              				{
+              					point:[270,140],
+                        area:[[220,90],[220,190],[320,190],[320,90]],
+              					data:{
+              						id:"",
+                          door:false,
+              						name:"商品1",
+              						price:"",
+              						size:"",
+              						image:""
+              					}
+              				},
+              				{
+              					point:[400,150],
+                        area:[[350,100],[350,200],[450,200],[450,100]],
+              					data:{
+              						id:"",
+                          door:false,
+              						name:"商品2",
+              						price:"",
+              						size:"",
+              						image:""
+              					}
+              				}
+              				]
+              		}
+              	}
+              	var nav2D = new overall2d();
+		    	nav2D.setContainer("nav2D");
+		    	nav2D.setSourURL("");
+		    	//nav2D.setSourURL("http://test.3vjia.com");
+		    	nav2D.init();
+		    	nav2D.defaultP(1);
+		    	nav2D.clfn=function(data){
+		    		console.log(data);
+		    		alert("点了"+data.name)
+		    	}
+
+		    	nav2D.reload(returnDataA.hotDotData);
+	    	nav2D.ready=function(){
+          $("#nav2D").height($(window).height());
+        $("#nav2D").width((nav2D.getWidth())*($(window).height()/(nav2D.getHeight())));
+       $(window).scroll(function(){
+          $(window).scrollTop(0);
+        })
+        };	
+				
+				
+			
+
+			
+			
+			function onWindowResize(){
+			$("#nav2D").height($(window).height())
+        $("#nav2D").width((nav2D.getWidth())*($(window).height()/(nav2D.getHeight())))
+		}
+		window.addEventListener( 'resize', onWindowResize, false );
+
+		</script>
+	</body>
+</html>
