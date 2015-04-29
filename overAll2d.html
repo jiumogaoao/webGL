@@ -22,11 +22,22 @@
         body{
           margin: 0px;
         }
+		#overallFrame{
+			overflow:hidden;
+			position:relative;
+			}
+		#nav2D{
+			position:absolute;
+			top:0px;
+			left:0px;
+			}
         </style>
 	</head>
 	<body>
-
-        		<canvas id="nav2D"></canvas>
+		<div id="overallFrame">
+            	<canvas id="nav2D"></canvas>
+        </div>
+        		
         	
 
 
@@ -96,8 +107,12 @@
 
 		    	nav2D.reload(returnDataA.hotDotData);
 	    	nav2D.ready=function(){
+			$("#overallFrame").width($(window).width());
+			$("#overallFrame").height($(window).height());
           $("#nav2D").height($(window).height());
+		$("#overall").height($(window).height());
         $("#nav2D").width((nav2D.getWidth())*($(window).height()/(nav2D.getHeight())));
+		$("#overall").width((nav2D.getWidth())*($(window).height()/(nav2D.getHeight())));
        $(window).scroll(function(){
           $(window).scrollTop(0);
         })
@@ -109,8 +124,12 @@
 			
 			
 			function onWindowResize(){
-			$("#nav2D").height($(window).height())
-        $("#nav2D").width((nav2D.getWidth())*($(window).height()/(nav2D.getHeight())))
+				$("#overallFrame").width($(window).width());
+			$("#overallFrame").height($(window).height());
+			$("#nav2D").height($(window).height());
+		$("#overall").height($(window).height());
+        $("#nav2D").width((nav2D.getWidth())*($(window).height()/(nav2D.getHeight())));
+		$("#overall").width((nav2D.getWidth())*($(window).height()/(nav2D.getHeight())));
 		}
 		window.addEventListener( 'resize', onWindowResize, false );
 

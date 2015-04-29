@@ -4,6 +4,10 @@ var overall2d=function(){
 	stage,
 	width=100,
 	height=100,
+	left=0,
+	oldLeft,
+	touchLeft,
+	touch=false,
 	conA= new createjs.Container(),
 	conB= new createjs.Container(),
 	conC= new createjs.Container(),
@@ -19,7 +23,7 @@ var overall2d=function(){
 		debugger;
 	}
 	function init(){
-
+		
 		var canvas = document.getElementById(container);
     	stage = new createjs.Stage(canvas);
     	point.src="texture/goodPoint.png";
@@ -102,6 +106,9 @@ var overall2d=function(){
     	}
     	createjs.Ticker.on("tick",tick);
 		function tick(event){
+			if(!touch){
+							left++;
+				}
 			var l = conB.getNumChildren();
 			if(rotationD==0){
 				if(rotation==45){
@@ -129,10 +136,56 @@ var overall2d=function(){
 				
 				var pt = child.globalToLocal(stage.mouseX, stage.mouseY);
 				if (stage.mouseInBounds && child.hitTest(pt.x, pt.y)) { notouch=false;child.alpha = 0.5; };
+				/***************************/
+				if(left>=(($("#"+container).width()/2)-$(window).width())){
+					left-=$("#"+container).width()/2;
+					}
+				if(left<0){
+					left+=$("#"+container).width()/2;
+					}
+				/***************************/
+				conA.x=conB.x=conC.x=left;
 				stage.update();
 			};
 			stage.update();
 		};
+		/************************************/
+		$(canvas).on("mousedown",function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			touch=ture;
+			oldLeft=left;
+			touchLeft=e.clientX;
+			})
+		$(canvas).on("mousemove",function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			left=touchLeft-e.clientX+oldLeft;
+			})
+		$(canvas).on("mouseup",function(){
+			e.stopPropagation();
+			e.preventDefault();
+			touch=false;
+			})
+		$(canvas).on("touchstart",function(e){
+			if ( e.touches.length == 1 ) {
+			e.stopPropagation();
+			e.preventDefault();
+			touch=ture;
+			oldLeft=left;
+			touchLeft=e.touches[0].clientX;
+			}
+			});
+		$(canvas).on("touchmove",function(e){
+			if ( e.touches.length == 1 ) {
+			e.stopPropagation();
+			e.preventDefault();
+			left=touchLeft-e.touches[0].clientX+oldLeft;
+			}
+			});
+		$(canvas).on("touchend",function(e){
+			touch=false;
+			});
 	};
 	function reload(rdata){
 		conA.removeAllChildren();
