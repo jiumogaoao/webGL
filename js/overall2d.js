@@ -30,6 +30,7 @@ var overall2d=function(){
     	stage.addChild(conA);
     	stage.addChild(conB);
     	stage.addChild(conC);
+    	
     	img.onload=function(){
     		width=img.width*2;
     		height=img.height;
@@ -42,6 +43,8 @@ var overall2d=function(){
 				conA.addChild(bg2); 	
 				that.ready();
 				imageready();
+				stage.scaleX=stage.scaleY=2;
+				stage.regY=height/3;
     		};
     	function imageready(){
     		$.each(data.hotPoint,function(i,n){
@@ -50,7 +53,7 @@ var overall2d=function(){
     		hotPoint.y=n.point[1];
     		hotPoint.data=n.data;
     		hotPoint.regX=hotPoint.regY=100;
-    		hotPoint.scaleX=hotPoint.scaleY=0.5;
+    		hotPoint.scaleX=hotPoint.scaleY=0.25;
     		hotPoint.on("click",function(even){
 
     			that.clfn(this.data);
@@ -104,10 +107,16 @@ var overall2d=function(){
     		conC.addChild(hotArea2);
     	});
     	}
+    	createjs.Ticker.setFPS(12)
     	createjs.Ticker.on("tick",tick);
 		function tick(event){
 			if(!touch){
-							left++;
+				if(Zepto.os&&Zepto.os.android){
+					left-=5/window.devicePixelRatio;
+				}else{
+					left-=1/window.devicePixelRatio;
+				}
+							
 				}
 			var l = conB.getNumChildren();
 			if(rotationD==0){
@@ -137,16 +146,18 @@ var overall2d=function(){
 				var pt = child.globalToLocal(stage.mouseX, stage.mouseY);
 				if (stage.mouseInBounds && child.hitTest(pt.x, pt.y)) { notouch=false;child.alpha = 0.5; };
 				/***************************/
-				if(left>=(($("#"+container).width()/2)-$(window).width())){
-					left-=$("#"+container).width()/2;
+				if(left<=-1*width/2){
+					left+=width/2;
 					}
-				if(left<0){
-					left+=$("#"+container).width()/2;
+				if(left>0){
+					left-=width/2;
 					}
+				
 				/***************************/
 				conA.x=conB.x=conC.x=left;
-				stage.update();
+
 			};
+
 			stage.update();
 		};
 		/************************************/
@@ -158,9 +169,12 @@ var overall2d=function(){
 			touchLeft=e.clientX;
 			})
 		$(canvas).on("mousemove",function(e){
-			e.stopPropagation();
+			if(touch){
+				e.stopPropagation();
 			e.preventDefault();
 			left=touchLeft-e.clientX+oldLeft;
+			}
+			
 			})
 		$(canvas).on("mouseup",function(){
 			e.stopPropagation();
@@ -177,11 +191,14 @@ var overall2d=function(){
 			}
 			});
 		$(canvas).on("touchmove",function(e){
-			if ( e.touches.length == 1 ) {
+			if(touch){
+				if ( e.touches.length == 1 ) {
 			e.stopPropagation();
 			e.preventDefault();
 			left=touchLeft-e.touches[0].clientX+oldLeft;
 			}
+			}
+			
 			});
 		$(canvas).on("touchend",function(e){
 			touch=false;
