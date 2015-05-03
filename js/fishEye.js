@@ -669,20 +669,19 @@ var fishEye={};
 					}
 				var image = new Image();
 				image.name=name;
+				image.crossOrigin = "*";
 				image.onload = function () {
-					textureContexts[u][this.name].drawImage(this,0,0,512,512)
-					debugger;
-					var showUrl=textureArry[u][this.name][0].toDataURL();
-					var showImg=new Image();
-					showImg.src=showUrl;
-					texture.image = showImg;
+					//textureContexts[u][this.name].drawImage(this,0,0,512,512)
+					//var showUrl=textureArry[u][this.name][0].toDataURL();
+					//var showImg=new Image();
+					//showImg.src=showUrl;
+					texture.image = image;
 					texture.needsUpdate = true;
-
 				};
 				image.src = sourURL+n;
-				pic[u][name]=material
-					})
-				})
+				pic[u][name]=material;
+					});
+				});
 			
 
 			
