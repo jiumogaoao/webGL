@@ -239,7 +239,7 @@
         <script type="text/javascript" src="js/zepto/selector.js"></script>
         <script type="text/javascript" src="js/zepto/zTouch.js"></script>		
 		<script type="text/javascript" src="js/three.min.js"></script>
-
+<script type="text/javascript" src="js/renderers/OBJLoader.js"></script>
 		<script type="text/javascript" src="js/renderers/Projector.js"></script>
 		<script type="text/javascript" src="js/renderers/CanvasRenderer.js"></script>
         <script type="text/javascript" src="js/fishEye.js"></script>
@@ -393,6 +393,7 @@
           success: function(data) {
               if(data.Status == "200"){
               	returnData=JSON.parse(data.JSON);
+				console.log(returnData)
               	fishEye.setContainer(["container","containerA"]);/*[展示层,id通道层]*/
               	fishEye.setSourURL("http://test.3vjia.com");
 			function changeSpace(color){
